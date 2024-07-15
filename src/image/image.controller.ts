@@ -8,7 +8,7 @@ export class ImageController {
   @Post('upload')
   async uploadImage(@Body('image') base64Image: string) {
     try {
-      await this.imageService.saveBase64Image(base64Image, 'image');
+      await this.imageService.saveImage(base64Image);
       return { message: 'Image saved successfully' };
     } catch (error) {
       return { message: 'Failed to save image', error: error.message };

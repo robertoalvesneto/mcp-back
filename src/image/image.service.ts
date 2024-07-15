@@ -1,21 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
+
+import { MinioUploadService } from 'src/minio/minio.service';
 
 @Injectable()
 export class ImageService {
-  saveBase64Image(base64String: string, filename: string): string {
-    // Remove o prefixo data:image/png;base64, se existir
-    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(base64Data, 'base64');
+  constructor(private readonly minio: MinioUploadService) {}
 
-    // Define o caminho do arquivo
-    const dirPath = path.join(__dirname, '../../uploads');
-    const filePath = path.join(dirPath, filename + '.jpeg');
-
-    // Salva o arquivo no sistema de arquivos
-    fs.writeFileSync(filePath, buffer);
-
-    return filePath;
+  saveImage(base64String: string): void {
+    const filename = 'image-' + Date.now().toString() + '.jpeg';
+    void this.minio.uploadImage(base64String, filename);
   }
 }
