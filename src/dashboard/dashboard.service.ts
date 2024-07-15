@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
+import { ItemQuantity } from './item';
+
 @Injectable()
 export class DashboardService {
-  get(): object {
-    return {
-      count: 100,
-      items: [{ nome: 'ola1' }, { nome: 'ola2' }, { nome: 'ola3' }],
-    };
+  async getQuantity(): Promise<ItemQuantity> {
+    return;
   }
 }

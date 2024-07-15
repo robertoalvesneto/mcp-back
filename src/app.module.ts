@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { QueueModule } from './queue/queue.module';
-import { ImageModule } from './image/image.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { ImageModule } from './image/image.module';
 import { MinioUploadModule } from './minio/minio.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
-  imports: [QueueModule, ImageModule, DashboardModule, MinioUploadModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    QueueModule,
+    ImageModule,
+    DashboardModule,
+    MinioUploadModule,
+    MongooseModule.forRoot(
+      'mongodb://admin:admin@mcp-mongodb:27017/mydatabase',
+    ),
+  ],
 })
 export class AppModule {}

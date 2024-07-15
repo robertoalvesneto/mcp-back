@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { DashboardController } from 'src/image/dashboard.controller';
+import { DashboardController } from 'src/dashboard/dashboard.controller';
 
 @Module({
   providers: [DashboardService],

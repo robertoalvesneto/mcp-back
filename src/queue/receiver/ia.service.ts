@@ -4,8 +4,6 @@ import { Message } from 'amqplib';
 
 @Injectable()
 export class IAService {
-  constructor() {}
-
   @RabbitSubscribe({
     exchange: 'exchange1',
     routingKey: 'ia.receiver',

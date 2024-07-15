@@ -4,8 +4,6 @@ import { Message } from 'amqplib';
 
 @Injectable()
 export class infraredService {
-  constructor() {}
-
   @RabbitSubscribe({
     exchange: 'exchange1',
     routingKey: 'infrared.receiver',

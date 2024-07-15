@@ -4,8 +4,6 @@ import { Message } from 'amqplib';
 
 @Injectable()
 export class ImageService {
-  constructor() {}
-
   @RabbitSubscribe({
     exchange: 'exchange1',
     routingKey: 'image.receiver',

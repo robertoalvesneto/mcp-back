@@ -15,7 +15,6 @@ export class MinioUploadService {
       accessKey: process.env.MINIO_ACCESS_KEY || 'minio',
       secretKey: process.env.MINIO_SECRET_KEY || 'minio123',
     };
-
     this.minioClient = new Client(minioOptions);
   }
 
