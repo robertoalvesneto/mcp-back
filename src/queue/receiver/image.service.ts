@@ -1,22 +1,30 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
-import { Message } from 'amqplib';
+
+import { MinioUploadService } from 'src/minio/minio.service';
 
 @Injectable()
 export class ImageService {
+  constructor(private readonly minio: MinioUploadService) {}
+
   @RabbitSubscribe({
     exchange: 'exchange1',
     routingKey: 'image.receiver',
     queue: 'image/receiver',
     queueOptions: { maxLength: 500, durable: true, autoDelete: false },
   })
-  imageReceiver(msg: { status: string }, message: Message): void {
+  imageReceiver(msg: { image: string }): void {
+    console.log(msg.image);
     try {
-      const routingKey = message.fields.routingKey;
-      console.log(msg);
-      console.log(routingKey);
+      this.saveImage(msg.image);
     } catch (e) {
-      return;
+      console.log(e);
     }
+  }
+
+  saveImage(base64String: string): void {
+    const filename = 'image-' + Date.now().toString() + '.jpeg';
+
+    void this.minio.uploadImage(base64String, filename);
   }
 }

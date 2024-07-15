@@ -96,7 +96,7 @@
       "vhost": "/",
       "destination": "image/receiver",
       "destination_type": "queue",
-      "routing_key": "image.send",
+      "routing_key": "image.receiver",
       "arguments": {}
     },
     {
