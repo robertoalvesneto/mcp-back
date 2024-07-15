@@ -2,6 +2,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 
 // My Modules
+import { MinioUploadModule } from 'src/minio/minio.module';
 import { MqttModule } from '../mqtt/mqtt.module';
 
 // Service
@@ -14,6 +15,7 @@ import { IAService } from './receiver/ia.service';
 @Module({
   imports: [
     RabbitMQModule.forRoot(RabbitMQModule, AMQPModulesOptions),
+    MinioUploadModule,
     MqttModule,
   ],
   providers: [infraredService, ImageService, IAService, SendCommandService],
