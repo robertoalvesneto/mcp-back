@@ -1,0 +1,69 @@
+services:
+  mcp-api:
+    container_name: mcp-api
+    build:
+      dockerfile: dockerfiles/Dockerfile.api
+      target: development
+    command: npm run start:debug
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/usr/src/api
+      - ./node_modules:/usr/src/api/node_modules
+    networks:
+      - mcp-network
+    ports:
+      - 3000:3000
+
+  mcp-mongodb:
+    container_name: mcp-mongodb
+    image: mongo:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mcp_dev_db_data:/data/db
+    networks:
+      - mcp-network
+    ports:
+      - 27017:27017
+
+  mcp-rabbitmq:
+    container_name: mcp-rabbitmq
+    build:
+      dockerfile: ./dockerfiles/rabbitmq/Dockerfile.rabbitmq
+    networks:
+      - mcp-network
+    ports:
+      - 5672:5672
+      - 1883:1883
+      - 15672:15672
+      - 15675:15675
+    volumes:
+      - mcp_rabbitmq_data:/var/lib/rabbitmq/
+      - mcp_rabbitmq_log:/var/log/rabbitmq/
+
+  mcp-minio:
+    container_name: mcp-minio
+    image: minio/minio
+    command: server --console-address :9001 /data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+
+networks:
+  mcp-network:
+    name: mcp-network
+    driver: bridge
+
+volumes:
+  mcp_dev_db_data:
+  mcp_rabbitmq_data:
+  mcp_rabbitmq_log:
+  minio-data:

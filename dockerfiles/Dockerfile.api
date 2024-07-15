@@ -1,0 +1,11 @@
+# --- DEVELOPMENT ENVIRONMENT
+FROM node:latest AS development
+
+WORKDIR /usr/src/api
+
+COPY ./package*.json ./ 
+
+RUN npm i
+
+COPY ./ ./
+# --->
